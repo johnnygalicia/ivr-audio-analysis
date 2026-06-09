@@ -1,75 +1,171 @@
 # IVR Audio Analysis Pipeline
 
-Pipeline en Python para analizar grabaciones telefónicas (IVR), detectar calidad de audio, segmentar contenido útil y generar métricas operativas para análisis.
+Pipeline desarrollado en Python para el análisis automático de grabaciones telefónicas (IVR), enfocado en la evaluación de calidad de audio, detección de silencios y extracción de métricas operativas.
 
-Este sistema permite identificar audios vacíos, silencios prolongados y grabaciones sospechosas mediante análisis de señal y reglas heurísticas.
-
----
-
-## Problema
-
-En sistemas IVR, grandes volúmenes de grabaciones contienen silencios, audios corruptos o de baja calidad, lo que dificulta el monitoreo y análisis operativo.
-
-Este proyecto automatiza la evaluación de calidad de audio y la extracción de métricas relevantes para facilitar el análisis.
+El sistema permite identificar grabaciones vacías, silencios prolongados y audios potencialmente problemáticos mediante técnicas de procesamiento digital de señales y análisis de características acústicas.
 
 ---
 
-## Funcionalidad
+## Descripción del problema
 
-- Procesamiento batch de audios
-- Detección de duración total
-- Segmentación en frases mediante detección de silencio
-- Cálculo de audio útil vs total
-- Extracción de features de señal (RMS, variabilidad)
-- Clasificación de audios en:
-  - `silencio_real`
-  - `vacio`
-  - `ivr_limpio`
-  - `sospechoso`
-  - `gris`
-- Generación de resultados en CSV
-- Análisis exploratorio en Excel (dashboard)
+Los sistemas IVR generan grandes volúmenes de grabaciones que frecuentemente contienen silencios extensos, audios incompletos o problemas de calidad. La revisión manual de estos archivos resulta costosa y poco escalable.
+
+Este proyecto automatiza la evaluación de las grabaciones, proporcionando métricas objetivas que facilitan el monitoreo operativo y el análisis posterior de los datos.
 
 ---
 
-## Pipeline
+## Funcionalidades
 
-Audio → Segmentación → Extracción de features → Clasificación → CSV → Dashboard
-
----
-
-## Resultados
-
-Se incluye un archivo Excel con:
-
-- Métricas agregadas por clase
-- Distribución de audios
-- Promedios de audio útil
-- Análisis de RMS
-- Tablas dinámicas y visualizaciones
+* Procesamiento batch de múltiples archivos de audio.
+* Detección de duración total de las grabaciones.
+* Segmentación automática mediante detección de silencios.
+* Cálculo de tiempo útil de audio.
+* Extracción de características acústicas.
+* Análisis de energía RMS.
+* Medición de variabilidad de señal.
+* Clasificación automática de grabaciones.
+* Generación de reportes en formato CSV.
+* Exportación de resultados para análisis exploratorio en Excel.
 
 ---
 
-## Tecnologías
+## Categorías de clasificación
 
-- Python
-- Librosa
-- Pandas
-- NumPy
+Las grabaciones son clasificadas en las siguientes categorías:
+
+| Categoría     | Descripción                                        |
+| ------------- | -------------------------------------------------- |
+| silencio_real | Grabaciones compuestas principalmente por silencio |
+| vacio         | Audio prácticamente inexistente o inválido         |
+| ivr_limpio    | Grabación con contenido útil y calidad adecuada    |
+| sospechoso    | Posibles anomalías o comportamientos atípicos      |
+| gris          | Casos intermedios que requieren revisión           |
+
+---
+
+## Flujo de procesamiento
+
+```text
+Audio
+  ↓
+Preprocesamiento
+  ↓
+Detección de silencios
+  ↓
+Segmentación
+  ↓
+Extracción de características
+  ↓
+Clasificación heurística
+  ↓
+Generación de reportes
+  ↓
+CSV / Dashboard Excel
+```
+
+---
+
+## Estructura del proyecto
+
+```text
+ivr-audio-analysis/
+│
+├── data/
+│   ├── raw/
+│   └── processed/
+│
+├── outputs/
+│   ├── reporte_audio.csv
+│   └── reporte_audio.xlsx
+│
+├── pipeline/
+│   └── batch_processing.py
+│
+├── src/
+│   ├── processing.py
+│   ├── segmentation.py
+│   └── features.py
+│
+├── main.py
+├── requirements.txt
+└── README.md
+```
+
+---
+
+## Tecnologías utilizadas
+
+* Python
+* NumPy
+* Pandas
+* Librosa
+* OpenPyXL
+
+---
+
+## Instalación
+
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
 ## Ejecución
 
 ```bash
-pip install -r requirements.txt
 python main.py
+```
 
-# Nota sobre datos 
-Se incluyen solo algunos audios de ejemplo. 
-El dataset completo no se incluye por tamaño. 
+---
 
-# Próxios pasos 
-- Implementación de modelos de clasificación (ML) 
-- Optimización del pipeline con paralelización (CUDA) 
-- Mejora en extracción de features
+## Resultados
+
+El sistema genera reportes estructurados que incluyen:
+
+* Clasificación de grabaciones.
+* Métricas de duración total.
+* Porcentaje de audio útil.
+* Estadísticas de energía RMS.
+* Resúmenes agregados para análisis operativo.
+
+Además, se exporta un archivo Excel que permite realizar análisis exploratorios, tablas dinámicas y visualizaciones.
+
+---
+
+## Habilidades demostradas
+
+Este proyecto demuestra experiencia en:
+
+* Procesamiento digital de señales.
+* Análisis de audio en Python.
+* Extracción de características acústicas.
+* Automatización de procesos de análisis.
+* Manipulación y análisis de datos con Pandas.
+* Generación automática de reportes.
+* Diseño modular de software científico.
+
+---
+
+## Nota sobre los datos
+
+Por razones de tamaño y privacidad, el conjunto completo de grabaciones no se incluye en este repositorio.
+
+Se proporcionan únicamente ejemplos representativos para demostrar el funcionamiento del pipeline.
+
+---
+
+## Próximos pasos
+
+* Incorporar modelos de Machine Learning para clasificación automática.
+* Paralelización del procesamiento utilizando CUDA o multiprocessing.
+* Incorporar nuevas características acústicas.
+* Implementar métricas avanzadas de calidad de audio.
+* Generar dashboards interactivos para monitoreo operativo.
+
+---
+
+## Autor
+
+Johnny Michael Galicia Orihuela
+
