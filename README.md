@@ -2,70 +2,62 @@
 
 Pipeline desarrollado en Python para el análisis automático de grabaciones telefónicas (IVR), enfocado en la evaluación de calidad de audio, detección de silencios y extracción de métricas operativas.
 
-El sistema permite identificar grabaciones vacías, silencios prolongados y audios potencialmente problemáticos mediante técnicas de procesamiento digital de señales y análisis de características acústicas.
+El sistema permite identificar grabaciones vacías, silencios prolongados y audios potencialmente problemáticos mediante técnicas de procesamiento digital de señales y análisis de características acústicas, ademas de generar reportes que faciliten el monitoreo operativo mediante un dashboard interactivo en Excel.
+---
+
+# Dashboard
+
+El resultado final del proyecto es un dashboard que resume automáticamente los principales indicadores obtenidos durante el procesamiento de las grabaciones.
+
+<p align="center">
+    <img src="images/dashboard_overview.png" width="900">
+</p>
 
 ---
 
-## Descripción del problema
+# Caso de uso
 
-Los sistemas IVR generan grandes volúmenes de grabaciones que frecuentemente contienen silencios extensos, audios incompletos o problemas de calidad. La revisión manual de estos archivos resulta costosa y poco escalable.
+En entornos donde se generan cientos de grabaciones IVR diariamente, la revisión manual de cada archivo resulta lenta, repetitiva y poco escalable.
 
-Este proyecto automatiza la evaluación de las grabaciones, proporcionando métricas objetivas que facilitan el monitoreo operativo y el análisis posterior de los datos.
-
----
-
-## Funcionalidades
-
-* Procesamiento batch de múltiples archivos de audio.
-* Detección de duración total de las grabaciones.
-* Segmentación automática mediante detección de silencios.
-* Cálculo de tiempo útil de audio.
-* Extracción de características acústicas.
-* Análisis de energía RMS.
-* Medición de variabilidad de señal.
-* Clasificación automática de grabaciones.
-* Generación de reportes en formato CSV.
-* Exportación de resultados para análisis exploratorio en Excel.
+Este proyecto automatiza dicho proceso mediante un pipeline de procesamiento de audio que analiza cada grabación, identifica posibles incidencias, extrae métricas relevantes y genera reportes estructurados para facilitar el monitoreo operativo y el análisis posterior mediante un dashboard en Excel.
 
 ---
 
-## Categorías de clasificación
+# Descripción del problema
 
-Las grabaciones son clasificadas en las siguientes categorías:
+Los sistemas IVR generan grandes volúmenes de grabaciones telefónicas que con frecuencia contienen:
 
-| Categoría     | Descripción                                        |
-| ------------- | -------------------------------------------------- |
-| silencio_real | Grabaciones compuestas principalmente por silencio |
-| vacio         | Audio prácticamente inexistente o inválido         |
-| ivr_limpio    | Grabación con contenido útil y calidad adecuada    |
-| sospechoso    | Posibles anomalías o comportamientos atípicos      |
-| gris          | Casos intermedios que requieren revisión           |
+- Audios vacíos.
+- Silencios prolongados.
+- Grabaciones incompletas.
+- Problemas de calidad.
+- Contenido útil mezclado con largos periodos de silencio.
 
----
+Detectar este tipo de incidencias de forma manual implica invertir tiempo y recursos, además de dificultar el monitoreo continuo de la operación.
 
-## Flujo de procesamiento
-
-```text
-Audio
-  ↓
-Preprocesamiento
-  ↓
-Detección de silencios
-  ↓
-Segmentación
-  ↓
-Extracción de características
-  ↓
-Clasificación heurística
-  ↓
-Generación de reportes
-  ↓
-CSV / Dashboard Excel
-```
+Para resolver este problema, se desarrolló un pipeline modular capaz de procesar automáticamente múltiples grabaciones, extraer características acústicas, clasificarlas y generar reportes listos para su análisis.
 
 ---
 
-## Estructura del proyecto
+# Flujo de procesamiento
+
+El siguiente diagrama resume el funcionamiento general del sistema.
+
+<p align="center">
+    <img src="images/pipeline_workflow.png" width="950">
+</p>
+
+---
+# Arquitectura del procesamineto
+El siguiente diagrama resume el funcionamiento general del procesamiento.
+
+<p align="center">
+    <img src="images/arquitecture.png" width="950">
+</p>
+
+---
+
+# Estructura del proyecto
 
 ```text
 ivr-audio-analysis/
@@ -73,10 +65,6 @@ ivr-audio-analysis/
 ├── data/
 │   ├── raw/
 │   └── processed/
-│
-├── outputs/
-│   ├── reporte_audio.csv
-│   └── reporte_audio.xlsx
 │
 ├── pipeline/
 │   └── batch_processing.py
@@ -86,6 +74,16 @@ ivr-audio-analysis/
 │   ├── segmentation.py
 │   └── features.py
 │
+├── outputs/
+│   └── reporte_audio.csv
+│
+├── dashboard/
+│   └── ivr_dashboard.xlsx
+│
+├── images/
+│   ├── dashboard.png
+│   └── pipeline_workflow.png
+│
 ├── main.py
 ├── requirements.txt
 └── README.md
@@ -93,17 +91,47 @@ ivr-audio-analysis/
 
 ---
 
-## Tecnologías utilizadas
+# Funcionalidades
 
-* Python
-* NumPy
-* Pandas
-* Librosa
-* OpenPyXL
+- Procesamiento por lotes de múltiples archivos de audio.
+- Detección automática de silencios.
+- Segmentación de grabaciones.
+- Extracción de características acústicas.
+- Cálculo de energía RMS.
+- Cálculo de rango dinámico.
+- Clasificación heurística de las grabaciones.
+- Generación automática de reportes en formato CSV.
+- Integración de resultados en un dashboard para análisis exploratorio.
 
 ---
 
-## Instalación
+# Categorías de clasificación
+
+Cada grabación es clasificada automáticamente en una de las siguientes categorías.
+
+| Categoría | Descripción |
+|-----------|-------------|
+| **ivr_limpio** | Grabación con contenido útil y calidad adecuada. |
+| **sospechoso** | Audio con posibles anomalías o comportamiento atípico. |
+| **gris** | Casos intermedios que requieren revisión manual. |
+| **vacio** | Grabación vacía o inválida. |
+| **silencio_real** | Grabación compuesta principalmente por silencio. |
+
+---
+
+# Tecnologías utilizadas
+
+- Python
+- Pandas
+- NumPy
+- Librosa
+- OpenPyXL
+- Microsoft Excel
+- Git
+
+---
+
+# Instalación
 
 ```bash
 pip install -r requirements.txt
@@ -111,7 +139,7 @@ pip install -r requirements.txt
 
 ---
 
-## Ejecución
+# Ejecución
 
 ```bash
 python main.py
@@ -119,53 +147,50 @@ python main.py
 
 ---
 
-## Resultados
+# Resultados obtenidos
 
-El sistema genera reportes estructurados que incluyen:
+El pipeline genera automáticamente:
 
-* Clasificación de grabaciones.
-* Métricas de duración total.
-* Porcentaje de audio útil.
-* Estadísticas de energía RMS.
-* Resúmenes agregados para análisis operativo.
+- Reporte en formato CSV con una fila por cada grabación procesada.
+- Clasificación automática de las grabaciones.
+- Métricas de duración total.
+- Porcentaje de audio útil.
+- Estadísticas de energía RMS.
+- Métricas de rango dinámico.
+- Dashboard interactivo en Excel para facilitar el análisis de resultados.
 
-Además, se exporta un archivo Excel que permite realizar análisis exploratorios, tablas dinámicas y visualizaciones.
-
----
-
-## Habilidades demostradas
-
-Este proyecto demuestra experiencia en:
-
-* Procesamiento digital de señales.
-* Análisis de audio en Python.
-* Extracción de características acústicas.
-* Automatización de procesos de análisis.
-* Manipulación y análisis de datos con Pandas.
-* Generación automática de reportes.
-* Diseño modular de software científico.
+Durante las pruebas realizadas se procesaron **109 grabaciones**, obteniendo reportes estructurados que permiten identificar rápidamente problemas de calidad sin necesidad de revisar manualmente cada archivo.
 
 ---
 
-## Nota sobre los datos
+# Habilidades demostradas
 
-Por razones de tamaño y privacidad, el conjunto completo de grabaciones no se incluye en este repositorio.
+Este proyecto demuestra experiencia práctica en:
 
-Se proporcionan únicamente ejemplos representativos para demostrar el funcionamiento del pipeline.
-
----
-
-## Próximos pasos
-
-* Incorporar modelos de Machine Learning para clasificación automática.
-* Paralelización del procesamiento utilizando CUDA o multiprocessing.
-* Incorporar nuevas características acústicas.
-* Implementar métricas avanzadas de calidad de audio.
-* Generar dashboards interactivos para monitoreo operativo.
+- Desarrollo de aplicaciones con Python.
+- Procesamiento Digital de Señales (DSP).
+- Análisis y procesamiento de audio.
+- Automatización de procesos.
+- Procesamiento y análisis de datos con Pandas.
+- Extracción de características acústicas.
+- Generación automática de reportes.
+- Desarrollo de dashboards en Microsoft Excel.
+- Diseño modular de software.
 
 ---
 
-## Autor
+# Conjunto de datos
 
-Johnny Michael Galicia Orihuela
+Las grabaciones originales utilizadas durante el desarrollo del proyecto no se incluyen en este repositorio debido a restricciones de privacidad y tamaño.
 
+Se proporcionan únicamente archivos de ejemplo para demostrar el funcionamiento general del pipeline.
+
+---
+
+# Autor
+
+**Johnny M. Galicia O.**
+
+Estudiante de Física — Universidad Nacional Autónoma de México (UNAM)
+
+Python | Análisis de Datos | Procesamiento Digital de Señales
